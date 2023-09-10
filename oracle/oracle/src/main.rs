@@ -28,7 +28,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
 
     let event = Contract::event_of_type::<TransferFilter>(client)
-        .from_block(18103139)
+        .from_block(18103160)
         .address(ValueOrArray::Array(vec![
             USDT.parse()?,
         ]));
