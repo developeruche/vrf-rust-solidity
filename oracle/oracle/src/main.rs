@@ -12,13 +12,13 @@ use std::time::Instant;
 abigen!(
     AggregatorInterface,
     r#"[
-        event AnswerUpdated(int256 indexed current, uint256 indexed roundId, uint256 updatedAt)
+        event Transfer(address indexed from, address indexed to, uint value)
     ]"#,
 );
 
 
 
-const PRICE_FEED_1: &str = "0x7de93682b9b5d80d45cd371f7a14f74d49b0914c";
+const USDT: &str = "0xdac17f958d2ee523a2206206994597c13d831ec7";
 
 
 #[tokio::main]
@@ -27,22 +27,23 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let client = Arc::new(client);
 
 
-    let event = Contract::event_of_type::<AnswerUpdatedFilter>(client)
-        .from_block(16022082)
+    let event = Contract::event_of_type::<TransferFilter>(client)
+        .from_block(18103139)
         .address(ValueOrArray::Array(vec![
-            PRICE_FEED_1.parse()?,
+            USDT.parse()?,
         ]));
 
-    let mut stream = event.subscribe_with_meta().await?.take(2);
+    
 
     let mut last_attempt = Instant::now();
 
     loop {
+        let mut stream = event.subscribe_with_meta().await?.take(2);
         println!("waiting for events .................... :)");
 
         let elapsed = last_attempt.elapsed();
-        if elapsed < Duration::from_secs(30) {
-            tokio::time::sleep(Duration::from_secs(30) - elapsed).await;
+        if elapsed < Duration::from_secs(1) {
+            tokio::time::sleep(Duration::from_secs(1) - elapsed).await;
         }
 
 
