@@ -6,17 +6,15 @@ pragma solidity ^0.8.19;
 
 library Params {
     struct RandomnessRequest {
-        bytes32 request_id;
+        bytes32 app_hash;
         address requestor;
     }
 
     struct RandomnessFutureFullfillment {
-        bytes32 input;
-        uint256 randomness;
+        uint256 random_word;
         bytes32 request_id;
         address requestor;
-        uint8 v;
-        bytes32 r;
-        bytes32 s;
+        bytes signature;
+        address signer;
     }
 }

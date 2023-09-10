@@ -2,10 +2,11 @@
 pragma solidity ^0.8.19;
 
 import {Params} from "../providers/params.sol";
-import {OnchianOracleProvider as provider} from "../providers/modules/onchain-oracle.provider.sol";
+import {OnchianOracleProvider as provider, OnchainOracleSchema} from "../providers/modules/onchain-oracle.provider.sol";
+import {OnchainOracleController as Controller} from "../controllers/onchain-oracle.controller.sol";
 
-contract OnchainOracle {
-    function request_for_randomness(Params.RandomnessRequest memory params) external {
+contract OnchainOracle is Controller {
+    function request_for_randomness(Params.RandomnessRequest memory params) external returns (bytes32){
         return provider.request_for_randomness(params);
     }
 
@@ -14,9 +15,11 @@ contract OnchainOracle {
     }
 
 
+    function get_request(bytes32 request_id) external view returns (OnchainOracleSchema.Request memory){
+        return provider.get_request(request_id); 
+    }
 
-
-    function get_request() external view {
-        // do nothing
+    function verify_randomness() external pure returns (bool) {
+        return provider.verify_randomness();
     }
 }

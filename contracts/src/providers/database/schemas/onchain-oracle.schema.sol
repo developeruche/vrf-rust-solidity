@@ -9,11 +9,9 @@ library OnchainOracleSchema {
         bytes32 request_id;
         address requestor;
         bool status;
-
-        // TODO: add more fields
-        // - random words
-        // - proof
-        // - signer
+        uint256 random_word;
+        address random_word_signer;
+        bytes signature;
     }
 
     struct Storage {
@@ -34,7 +32,18 @@ library OnchainOracleSchema {
         return s.requests[request_id];
     }
 
-    function set_request(bytes32 request_id, address requestor) internal {
+    function set_request(Request memory _request) internal {
+        {
+            if (_request.request_id == bytes32(0)) {
+                revert OnchainOracleErrors.INVALID_REQUEST_ID();
+            }
+        }
+        Storage storage s = onchain_oracle_storage();
+
+        s.requests[_request.request_id] = _request;
+    }
+
+    function create_request(bytes32 request_id, address requestor) internal {
         {
             if (request_id == bytes32(0)) {
                 revert OnchainOracleErrors.INVALID_REQUEST_ID();
@@ -49,7 +58,10 @@ library OnchainOracleSchema {
         Request memory request = Request({
             request_id: request_id,
             requestor: requestor,
-            status: false
+            status: false,
+            random_word: 0,
+            random_word_signer: address(0),
+            signature: bytes("")
         });
 
         s.requests[request_id] = request;
@@ -74,6 +86,22 @@ library OnchainOracleSchema {
     function get_offchain_oracle() internal view returns (address) {
         Storage storage s = onchain_oracle_storage();
         return s.offchain_oracle;
+    }
+
+    function set_random_word(bytes32 request_id, uint256 random_word, address random_word_signer) internal {
+        Storage storage s = onchain_oracle_storage();
+        s.requests[request_id].random_word = random_word;
+        s.requests[request_id].random_word_signer = random_word_signer;
+    }
+
+    function is_ofchain_oracle(address addr) internal view returns (bool) {
+        Storage storage s = onchain_oracle_storage();
+        return s.offchain_oracle == addr;
+    }
+
+    function is_request_exists(bytes32 request_id) internal view returns (bool) {
+        Storage storage s = onchain_oracle_storage();
+        return s.requests[request_id].request_id != bytes32(0);
     }
 }
 
