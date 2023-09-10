@@ -26,6 +26,11 @@ library OnchainOracleSchema {
         }
     }
 
+    function initialize(address off_chain_oracle) internal {
+        Storage storage s = onchain_oracle_storage();
+        s.offchain_oracle = off_chain_oracle;
+    }
+
 
     function get_request(bytes32 request_id) internal view returns (Request memory) {
         Storage storage s = onchain_oracle_storage();

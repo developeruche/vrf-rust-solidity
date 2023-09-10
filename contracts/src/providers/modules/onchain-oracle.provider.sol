@@ -9,6 +9,9 @@ import {OnchainOracleController} from "../../controllers/onchain-oracle.controll
 import {OnchainOracleErrors as Errors} from "../errors/onchain-oracle.error.sol";
 
 library OnchianOracleProvider {
+    function initialize(address off_chain_oracle) internal {
+        OnchainOracleSchema.initialize(off_chain_oracle);
+    }
     function request_for_randomness(Params.RandomnessRequest memory params) internal returns(bytes32 request_id) {
         request_id = gen_request_id(params.app_hash, params.requestor);
         if (OnchainOracleSchema.is_request_exists(request_id)) {
@@ -50,4 +53,5 @@ library OnchianOracleProvider {
     function gen_request_id(bytes32 app_hash, address requestor) internal view returns (bytes32) {
         return keccak256(abi.encodePacked(block.timestamp, block.prevrandao, app_hash, requestor));
     }
+    
 }

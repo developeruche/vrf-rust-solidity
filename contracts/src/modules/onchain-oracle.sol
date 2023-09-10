@@ -6,6 +6,10 @@ import {OnchianOracleProvider as provider, OnchainOracleSchema} from "../provide
 import {OnchainOracleController as Controller} from "../controllers/onchain-oracle.controller.sol";
 
 contract OnchainOracle is Controller {
+    constructor(address off_chain_signer) {
+        provider.initialize(off_chain_signer);
+    }
+    
     function request_for_randomness(Params.RandomnessRequest memory params) external returns (bytes32){
         return provider.request_for_randomness(params);
     }
