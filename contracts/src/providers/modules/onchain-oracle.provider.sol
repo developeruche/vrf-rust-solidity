@@ -5,7 +5,7 @@ import {Params} from "../params.sol";
 import {OnchainOracleSchema} from "../database/schemas/onchain-oracle.schema.sol";
 import {Context} from "../commons/context.sol";
 import {OnchainOracleEvents} from "../events/onchain-oracle.event.sol";
-import {OnchainOracleController} from "../../controllers/onchain-oracle.controller.sol";
+import {AbstractOnchainOracle} from "../../controllers/abstract-onchain-oracle.controller.sol";
 import {OnchainOracleErrors as Errors} from "../errors/onchain-oracle.error.sol";
 
 library OnchianOracleProvider {
@@ -36,7 +36,7 @@ library OnchianOracleProvider {
 
         OnchainOracleSchema.set_request(request);
 
-        OnchainOracleController(request.requestor).fullfill_randomness_future(params);
+        AbstractOnchainOracle(request.requestor).fullfill_randomness_future(request);
 
         emit OnchainOracleEvents.FullfillRandomness(params.random_word, params.request_id, params.requestor, params.signature, params.signer);
     }   
