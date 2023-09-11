@@ -6,10 +6,10 @@ import {OnchianOracleProvider as provider, OnchainOracleSchema} from "../provide
 import {OnchainOracleController as Controller} from "../controllers/onchain-oracle.controller.sol";
 
 abstract contract AbstractOnchainOracle {
-    address public immutable off_chain_signer;
+    address public immutable onchain_oracle;
 
-    constructor(address _off_chain_signer) {
-        off_chain_signer = _off_chain_signer;
+    constructor(address _onchain_oracle) {
+        onchain_oracle = _onchain_oracle;
     }
     
     function fullfill_randomness_future_internal(OnchainOracleSchema.Request memory request) internal virtual;
