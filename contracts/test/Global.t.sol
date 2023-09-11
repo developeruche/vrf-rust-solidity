@@ -27,7 +27,7 @@ contract MainTest is Test {
 
 
         oracle = new OnchainOracle(off_chain_oracale);
-        game = new Lottery(off_chain_oracale, 1 ether);
+        game = new Lottery(address(oracle), 1 ether);
     }
 
     function test_lottery() public {

@@ -17,21 +17,21 @@ contract MainTest is Test {
     address off_chain_oracale = 0x90F79bf6EB2c4f870365E785982E1f101E93b906;
 
 
-    function setUp() public {
-        vm.startPrank(owner);
+    // function setUp() public {
+    //     vm.startPrank(owner);
 
-        vm.deal(owner, 1000 ether);
-        vm.deal(player_one, 1000 ether);
-        vm.deal(player_two, 1000 ether);
-        vm.deal(off_chain_oracale, 1000 ether);
+    //     vm.deal(owner, 1000 ether);
+    //     vm.deal(player_one, 1000 ether);
+    //     vm.deal(player_two, 1000 ether);
+    //     vm.deal(off_chain_oracale, 1000 ether);
 
 
-        oracle = new OnchainOracle(off_chain_oracale);
-        game = new Lottery(off_chain_oracale, 1 ether);
-    }
+    //     oracle = new OnchainOracle(off_chain_oracale);
+    //     game = new Lottery(off_chain_oracale, 1 ether);
+    // }
 
-    function test_lottery() public {
-        game.participate{value: 1 ether}();
-        game.end();
-    }
+    // function test_lottery() public {
+    //     game.participate{value: 1 ether}();
+    //     game.end();
+    // }
 }
