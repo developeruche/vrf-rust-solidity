@@ -35,7 +35,8 @@ library OnchianOracleProvider {
         request.status = true;
 
         OnchainOracleSchema.set_request(request);
-
+        
+        // this call should be made to a specified gas limit
         AbstractOnchainOracle(request.requestor).fullfill_randomness_future(request);
 
         emit OnchainOracleEvents.FullfillRandomness(params.random_word, params.request_id, params.requestor, params.signature, params.signer);
